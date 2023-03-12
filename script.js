@@ -5,25 +5,28 @@ const Node = (_data, _source = null, _level = 0) => {
     const source = _source;
     const level = _level;
 
-    return {data, source, level};
+    return { data, source, level };
 }
 
-const getAllMovesFrom = function getAllPossibleDestinationsfrom([x,y]) {
+// next, check if coordinates are inside board
+const isInsideBoard = (coordinate) => {
+    const [x, y] = coordinate;
+    return (x >= 0 && x <= 7)
+        && (y >= 0 && y <= 7);
+}
+
+const getAllMovesFrom = function getAllPossibleDestinationsfrom([x, y]) {
     let possibleMoves = [];
-    for (let a of [-2,-1,1,2]) {
-        if (Math.abs(a) === 1) for (let b of [-2,2]) possibleMoves.push([x+a,y+b]);
-        if (Math.abs(a) === 2) for (let b of [-1,1]) possibleMoves.push([x+a,y+b]);
+    for (let a of [-2, -1, 1, 2]) {
+        if (Math.abs(a) === 1) for (let b of [-2, 2]) possibleMoves.push([x + a, y + b]);
+        if (Math.abs(a) === 2) for (let b of [-1, 1]) possibleMoves.push([x + a, y + b]);
     }
-    // next, check if coordinates are inside board
-    const isInsideBoard = (coordinate) => {
-        return coordinate[0]>=0 && coordinate[0]<=7 
-        && coordinate[1]>=0 && coordinate[1]<=7;
-    }
+
     return possibleMoves.filter(coordinate => isInsideBoard(coordinate));
 }
 
-const stringifyCoord = function coordToChessSquares([x,y]) {
-    return String.fromCharCode(97+x) + (y+1);
+const stringifyCoord = function coordToChessSquares([x, y]) {
+    return String.fromCharCode(97 + x) + (y + 1);
 }
 
 const getShortestPath = (root, end, queue = Queue(), visitedSquares = []) => {
@@ -34,24 +37,25 @@ const getShortestPath = (root, end, queue = Queue(), visitedSquares = []) => {
             res.push(curr.source.data);
             curr = curr.source;
         }
-        return {path:res.reverse(), moves: root.level};
+        return { path: res.reverse(), moves: root.level };
     };
     // Push current coord into visited list
     visitedSquares.push(stringifyCoord(root.data));
     // get all possible moves(excluding ones already visited) from currrent square/positon
     const legalMoves = getAllMovesFrom(root.data).filter(coord => !visitedSquares.includes(stringifyCoord(coord)));
     // If any legal moves exist, enqueue them into queue to check for later
-    if (legalMoves !== []) legalMoves.forEach(coord => queue.enqueue(Node(coord, root, root.level+1)));
+    if (legalMoves !== []) legalMoves.forEach(coord => queue.enqueue(Node(coord, root, root.level + 1)));
     // queue.print(); // debug code
     return getShortestPath(queue.dequeue(), end, queue, visitedSquares);
 }
 
 
 const knightMoves = (start, end) => {
-    let {path,moves} = getShortestPath(Node(start), end);
+    let { path, moves } = getShortestPath(Node(start), end);
     console.log(JSON.stringify(path));
-    path.forEach((coord,index) => path[index] = stringifyCoord(coord));
-    return {path,moves};
+    path.forEach((coord, index) => path[index] = stringifyCoord(coord));
+    return { path, moves };
 }
 
-console.log(knightMoves([0,0],[2,1]));
+
+export { Node, isInsideBoard, getAllMovesFrom, stringifyCoord, getShortestPath, knightMoves };
