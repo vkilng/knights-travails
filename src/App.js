@@ -1,6 +1,5 @@
 import './styles/App.css';
 import Square from './components/Square';
-import { v4 as uuidv4 } from 'uuid';
 import { useEffect, useState } from 'react';
 import LeaderLine from 'leader-line-new';
 import Queue from './scripts/Queue';
@@ -22,14 +21,17 @@ export default function App() {
     setBoard(duplicate);
   }, [])
 
-  const setArrow = ([x1, y1], [x2, y2], color = '#bae6fd', startPlug = 'disc', endPlug = 'disc') => {
+  const setArrow = ([x1, y1], [x2, y2], color = '#7dd3fc', startPlug = 'disc', endPlug = 'disc', size = 3) => {
     const start = document.getElementById(`${x1}${y1}`);
     const end = document.getElementById(`${x2}${y2}`);
-    new LeaderLine(
+    const line = new LeaderLine(
       LeaderLine.pointAnchor(start, { x: '50%', y: '50%', width: 0, height: 0 }),
       LeaderLine.pointAnchor(end, { x: '50%', y: '50%', width: 0, height: 0 }),
-      { path: 'straight', color: color, startPlug: startPlug, endPlug: endPlug },
+      { path: 'straight', color: color, startPlug: startPlug, endPlug: endPlug, size: size, hide: true },
     );
+    setTimeout(() => {
+      line.show('draw');
+    }, 0);
   }
 
   const getPathsFrom = (end) => {
@@ -37,12 +39,14 @@ export default function App() {
     const { path, moves } = getShortestPath(Node(startNode), end);
     path.forEach((coordinate, index) => {
       if (index === path.length - 2) {
-        setArrow(coordinate, path[index + 1], '#0ea5e9', 'disc', 'arrow1');
+        setArrow(coordinate, path[index + 1], '#0ea5e9', 'disc', 'arrow1', 5);
         return;
       }
-      if (index < path.length - 1) setArrow(coordinate, path[index + 1], '#0ea5e9', 'disc', 'disc');
+      if (index < path.length - 1) setArrow(coordinate, path[index + 1], '#0ea5e9', 'disc', 'disc', 5);
     });
-    setStartNode(end);
+    setTimeout(() => {
+      setStartNode(end);
+    }, 500);
   }
 
   const getShortestPath = (root, end, queue = Queue(), visitedSquares = []) => {
@@ -74,11 +78,11 @@ export default function App() {
         <div className='grid grid-rows-8 w-fit'>
           {board.length > 0 &&
             board.map((row, index) =>
-              <div key={index} className='grid grid-cols-8 w-fit'>
+              <div key={`row${index}`} className='grid grid-cols-8 w-fit'>
                 {row.map(coordinate => {
                   if (coordinate[0] === startNode[0] && coordinate[1] === startNode[1])
-                    return <Square key={uuidv4()} coordinate={coordinate} horsey={true} />
-                  return <Square key={uuidv4()} coordinate={coordinate} getPathsFrom={getPathsFrom} />
+                    return <Square key={`${coordinate}`} coordinate={coordinate} horsey={true} />
+                  return <Square key={`${coordinate}`} coordinate={coordinate} getPathsFrom={getPathsFrom} />
                 }
                 )}
               </div>
