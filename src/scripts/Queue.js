@@ -1,24 +1,24 @@
 const Queue = () => {
-    let queue = [];
+  let queue = [];
 
-    const enqueue = (...args) => {
-        args.forEach(num => {queue = [num].concat(queue)});
-        return;
-    }
+  const enqueue = (...args) => {
+    args.forEach(num => { queue = [num].concat(queue) });
+    return;
+  }
 
-    const dequeue = () => {
-        return queue.pop();
-    }
+  const dequeue = () => {
+    return queue.pop();
+  }
 
-    const print = () => console.log(queue);
-    const toString = () => {
-        let res = '';
-        queue.forEach(num => res=res.concat(`(${num})->`));
-        return res.slice(0,-2);
-    };
-    const size = () => queue.length;
+  const print = () => console.log(queue);
+  const toString = () => {
+    let res = '';
+    queue.forEach(num => res = res.concat(`(${num})->`));
+    return res.slice(0, -2);
+  };
+  const size = () => queue.length;
 
-    return { enqueue, dequeue, print, toString, size };
+  return { enqueue, dequeue, print, toString, size };
 }
 
-export { Queue };
+export default Queue;
