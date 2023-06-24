@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/knights-travails/static/css/main.6cc5c942.css",
-    "main.js": "/knights-travails/static/js/main.747c329d.js",
-    "static/media/horse.svg": "/knights-travails/static/media/horse.e1d5a409355dc1c1bfecd80e12cab067.svg",
+    "main.css": "/knights-travails/static/css/main.0fb1a642.css",
+    "main.js": "/knights-travails/static/js/main.7b26cb4e.js",
+    "static/media/horse.svg": "/knights-travails/static/media/horse.f164839c01d8ee6d800bf558b21e1df3.svg",
     "index.html": "/knights-travails/index.html",
-    "main.6cc5c942.css.map": "/knights-travails/static/css/main.6cc5c942.css.map",
-    "main.747c329d.js.map": "/knights-travails/static/js/main.747c329d.js.map"
+    "main.0fb1a642.css.map": "/knights-travails/static/css/main.0fb1a642.css.map",
+    "main.7b26cb4e.js.map": "/knights-travails/static/js/main.7b26cb4e.js.map"
   },
   "entrypoints": [
-    "static/css/main.6cc5c942.css",
-    "static/js/main.747c329d.js"
+    "static/css/main.0fb1a642.css",
+    "static/js/main.7b26cb4e.js"
   ]
 }
