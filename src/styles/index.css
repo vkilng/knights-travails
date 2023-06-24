@@ -20,3 +20,37 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* footer */
+footer img:hover {
+  animation: wiggly 2s infinite;
+}
+
+@keyframes wiggly {
+  50% {
+    transform: rotate(360deg) scale(1.2);
+  }
+
+  100% {
+    transform: rotate(1080deg) scale(1);
+  }
+}
+
+/*scrollbar*/
+::-webkit-scrollbar {
+  width: 0.5vw;
+  height: 0.5vw;
+  border-radius: 0.5vw;
+}
+
+::-webkit-scrollbar-track {
+  background: #cbd5e1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #737373;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

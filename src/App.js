@@ -1,9 +1,9 @@
-import './styles/App.css';
 import Square from './components/Square';
 import { useEffect, useState } from 'react';
 import LeaderLine from 'leader-line-new';
 import Queue from './scripts/Queue';
 import { Node, stringifyCoord, getAllMovesFrom } from './scripts/script';
+import Info from '@phosphor-icons/react/Info';
 
 export default function App() {
   const [board, setBoard] = useState([]);
@@ -21,12 +21,12 @@ export default function App() {
     setBoard(duplicate);
   }, [])
 
-  const setArrow = ([x1, y1], [x2, y2], color = '#7dd3fc', startPlug = 'disc', endPlug = 'disc', size = 3) => {
+  const setArrow = ([x1, y1], [x2, y2], color = '#38bdf8', startPlug = 'disc', endPlug = 'disc', size = 1) => {
     const start = document.getElementById(`${x1}${y1}`);
     const end = document.getElementById(`${x2}${y2}`);
     const line = new LeaderLine(
-      LeaderLine.pointAnchor(start, { x: '50%', y: '50%', width: 0, height: 0 }),
-      LeaderLine.pointAnchor(end, { x: '50%', y: '50%', width: 0, height: 0 }),
+      LeaderLine.pointAnchor(start, { x: '50%', y: '50%' }),
+      LeaderLine.pointAnchor(end, { x: '50%', y: '50%' }),
       { path: 'straight', color: color, startPlug: startPlug, endPlug: endPlug, size: size, hide: true },
     );
     setTimeout(() => {
@@ -37,21 +37,26 @@ export default function App() {
   const getPathsFrom = (end) => {
     clearPaths();
     const { path, moves } = getShortestPath(Node(startNode), end);
-    path.forEach((coordinate, index) => {
-      if (index === path.length - 2) {
-        setArrow(coordinate, path[index + 1], '#0ea5e9', 'disc', 'arrow1', 5);
-        return;
-      }
-      if (index < path.length - 1) setArrow(coordinate, path[index + 1], '#0ea5e9', 'disc', 'disc', 5);
-    });
+    setTimeout(() => {
+      // clearPaths();
+      path.forEach((coordinate, index) => {
+        if (index === path.length - 2) {
+          setArrow(coordinate, path[index + 1], '#0ea5e9', 'disc', 'arrow1', 5);
+          return;
+        }
+        if (index < path.length - 1) setArrow(coordinate, path[index + 1], '#0ea5e9', 'disc', 'disc', 5);
+      });
+    }, 500 * (moves + 1));
     setTimeout(() => {
       setStartNode(end);
-    }, 500);
+    }, 500 * (moves + 2));
   }
 
   const getShortestPath = (root, end, queue = Queue(), visitedSquares = []) => {
     if (root.source) {
-      setArrow(root.source.data, root.data);
+      setTimeout(() => {
+        setArrow(root.source.data, root.data);
+      }, 500 * root.level);
     }
     if (stringifyCoord(root.data) === stringifyCoord(end)) {
       let curr = root;
@@ -73,8 +78,21 @@ export default function App() {
   }
 
   return (
-    <div className='w-full h-full flex items-center justify-center'>
-      <div className='flex gap-10'>
+    <div className='w-full h-full grid auto-cols-fr content-between justify-center'>
+      <header className='grid items-center justify-items-center bg-slate-300 p-2 text-black w-full'>
+        <div className='md:hidden text-lg grid items-center justify-items-center gap-1'>
+          Knights Travails
+          <div className="tooltip tooltip-bottom" data-tip="The knights travails script gets the shortest path for a horsey between two points. This is a visualization of the progression of a tree and the eventual retrieval of the shortest path by the script.
+          The solid blue line shows one of the shortest paths possible. The other scattered lines show the progression of the tree search before the shortest path is found.">
+            <Info size={16} />
+          </div>
+        </div>
+        <div className='hidden md:block text-sm'>
+          The knights travails script gets the shortest path for a horsey between two points. This is a visualization of the progression of a tree and the eventual retrieval of the shortest path by the script.
+          The solid blue line shows one of the shortest paths possible. The other scattered lines show the progression of the tree search before the shortest path is found.
+        </div>
+      </header>
+      <div className='flex gap-3 md:gap-10 my-5 justify-center items-center flex-col md:flex-row'>
         <div className='grid grid-rows-8 w-fit'>
           {board.length > 0 &&
             board.map((row, index) =>
@@ -88,8 +106,20 @@ export default function App() {
               </div>
             )}
         </div>
-        <button className='btn self-start normal-case' onClick={clearPaths}>Clear pathways</button>
+        <button className='btn md:self-start normal-case' onClick={clearPaths}>Clear pathways</button>
       </div>
+      <footer className='grid items-center justify-items-center bg-slate-300 text-black w-full p-2'>
+        <div className='flex items-center justify-center gap-2 text-sm'>
+          A mini project by
+          <a href="https://github.com/vkilng"> vkilng </a>
+          <a href="https://github.com/vkilng/knights-travails">
+            <img src={require('./assets/GitHub-Mark-32px.png')} alt="GitHub Page" width={'20px'} height={'20px'} />
+          </a>
+        </div>
+        <div className="tooltip tooltip-top" data-tip="You could clone this project and modify it as you will. I did it simply because I find it very cool to visualize.">
+          <Info size={16} />
+        </div>
+      </footer>
     </div>
   );
 }
