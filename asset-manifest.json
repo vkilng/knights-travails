@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/knights-travails/static/css/main.0fb1a642.css",
-    "main.js": "/knights-travails/static/js/main.0574fba6.js",
+    "main.css": "/knights-travails/static/css/main.9e241ab1.css",
+    "main.js": "/knights-travails/static/js/main.32348faf.js",
     "static/media/horse.svg": "/knights-travails/static/media/horse.f164839c01d8ee6d800bf558b21e1df3.svg",
     "index.html": "/knights-travails/index.html",
-    "main.0fb1a642.css.map": "/knights-travails/static/css/main.0fb1a642.css.map",
-    "main.0574fba6.js.map": "/knights-travails/static/js/main.0574fba6.js.map"
+    "main.9e241ab1.css.map": "/knights-travails/static/css/main.9e241ab1.css.map",
+    "main.32348faf.js.map": "/knights-travails/static/js/main.32348faf.js.map"
   },
   "entrypoints": [
-    "static/css/main.0fb1a642.css",
-    "static/js/main.0574fba6.js"
+    "static/css/main.9e241ab1.css",
+    "static/js/main.32348faf.js"
   ]
 }
