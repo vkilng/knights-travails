@@ -8,6 +8,7 @@ import Info from '@phosphor-icons/react/Info';
 export default function App() {
   const [board, setBoard] = useState([]);
   const [startNode, setStartNode] = useState([1, 0]);
+  const [showTree, setShowTree] = useState(false);
 
   useEffect(() => {
     const duplicate = [];
@@ -37,23 +38,22 @@ export default function App() {
   const getPathsFrom = (end) => {
     clearPaths();
     const { path, moves } = getShortestPath(Node(startNode), end);
-    setTimeout(() => {
-      // clearPaths();
-      path.forEach((coordinate, index) => {
+    path.forEach((coordinate, index) => {
+      setTimeout(() => {
         if (index === path.length - 2) {
           setArrow(coordinate, path[index + 1], '#0ea5e9', 'disc', 'arrow1', 5);
           return;
         }
         if (index < path.length - 1) setArrow(coordinate, path[index + 1], '#0ea5e9', 'disc', 'disc', 5);
-      });
-    }, 500 * (moves + 1));
+      }, showTree ? (500 * (moves + 1 + index)) : (500 * index));
+    });
     setTimeout(() => {
       setStartNode(end);
-    }, 500 * (moves + 2));
+    }, showTree ? (500 * (moves + 2)) : (500 * (moves)));
   }
 
   const getShortestPath = (root, end, queue = Queue(), visitedSquares = []) => {
-    if (root.source) {
+    if (root.source && showTree) {
       setTimeout(() => {
         setArrow(root.source.data, root.data);
       }, 500 * root.level);
@@ -82,14 +82,14 @@ export default function App() {
       <header className='grid items-center justify-items-center bg-slate-300 p-2 text-black w-full'>
         <div className='md:hidden text-lg grid items-center justify-items-center gap-1'>
           Knights Travails
-          <div className="tooltip tooltip-bottom" data-tip="The knights travails script gets the shortest path for a horsey between two points. This is a visualization of the progression of a tree and the eventual retrieval of the shortest path by the script.
-          The solid blue line shows one of the shortest paths possible. The other scattered lines show the progression of the tree search before the shortest path is found.">
+          <div className="tooltip tooltip-bottom" data-tip="The knights travails script gets the shortest path for a horsey between two points. This is a visualization of the propagation of a tree and the eventual retrieval of the shortest path by the script.
+          The solid blue line shows one of the shortest paths possible. The other scattered lines show the propagation of the tree search before the shortest path is found.">
             <Info size={16} />
           </div>
         </div>
         <div className='hidden md:block text-sm'>
-          The knights travails script gets the shortest path for a horsey between two points. This is a visualization of the progression of a tree and the eventual retrieval of the shortest path by the script.
-          The solid blue line shows one of the shortest paths possible. The other scattered lines show the progression of the tree search before the shortest path is found.
+          The knights travails script gets the shortest path for a horsey between two points. This is a visualization of the propagation of a tree and the eventual retrieval of the shortest path by the script.
+          The solid blue line shows one of the shortest paths possible. The other scattered lines show the propagation of the tree search before the shortest path is found.
         </div>
       </header>
       <div className='flex gap-3 md:gap-10 my-5 justify-center items-center flex-col md:flex-row'>
@@ -106,7 +106,13 @@ export default function App() {
               </div>
             )}
         </div>
-        <button className='btn md:self-start normal-case' onClick={clearPaths}>Clear pathways</button>
+        <div className='grid gap-5 items-center justify-start'>
+          <button className='btn md:self-start normal-case' onClick={clearPaths}>Clear pathways</button>
+          <div className='flex items-center justify-center gap-3'>
+            <label htmlFor="tree-toggler">Search tree paths</label>
+            <input type="checkbox" id='tree-toggler' className="toggle" defaultChecked={false} onChange={(e) => setShowTree(e.target.checked)} />
+          </div>
+        </div>
       </div>
       <footer className='grid items-center justify-items-center bg-slate-300 text-black w-full p-2'>
         <div className='flex items-center justify-center gap-2 text-sm'>
